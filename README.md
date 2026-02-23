@@ -1,10 +1,10 @@
 # PharmaCo API
 
-A REST API that allows citizens to find on-duty pharmacies .
+A REST API that allows citizens to find on-duty pharmacies.
 
 ---
 
-# Purpose
+## Purpose
 
 This API allows users to:
 
@@ -15,7 +15,7 @@ This API allows users to:
 
 ---
 
-# Tech Stack
+## Tech Stack
 
 - **Python 3.11+**
 - **FastAPI**
@@ -25,52 +25,65 @@ This API allows users to:
 
 ---
 
-# Project Structure
+## Project Structure
 
+```
 app/
 ├── main.py
 ├── database/
-│ └── mongodb.py
+│   └── mongodb.py
 ├── models/
 ├── schemas/
 ├── routers/
 ├── services/
 ├── core/
-│ ├── config.py
-│ └── security.py
+│   ├── config.py
+│   └── security.py
 └── utils/
-
-
+```
 
 ---
 
-# Installation
+## Installation
 
-##  Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/qinoratech/pharmaco-api.git
 cd pharmaco-api
+```
 
 ---
 
-# Create Virtual env 
+### Create Virtual Environment
 
+```bash
 python -m venv venv
 source venv/bin/activate   # Mac/Linux
 venv\Scripts\activate      # Windows
+```
 
+---
 
-# Install dependencies
+### Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+Example `requirements.txt`:
 
-# Example requirements.txt:
-
+```
 fastapi
 uvicorn
 python-dotenv
+```
 
-# Run the Server
+---
+
+### Run the Server
+
+```bash
 uvicorn app.main:app --reload
+```
 
