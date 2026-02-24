@@ -20,24 +20,18 @@ async def fetch_homepage_data():
 @router.get("/homepage")
 async def homepage(request: Request):
     # 1. Tente de lire depuis le cache Redis
-    try:
-        cached = await get_cached(HOMEPAGE_CACHE_KEY)
-        if cached:
-            try:
-                return json.loads(cached)
-            except Exception:
-                pass  # fallback si le cache est corrompu
-    except RuntimeError:
-        cached = None  # Redis non configuré
+    cached = await get_cached(HOMEPAGE_CACHE_KEY)
+    if cached:
+        try:
+            return json.loads(cached)
+        except Exception:
+            pass  # fallback si le cache est corrompu
 
     # 2. Sinon, fetch avec timeout
     data = await with_timeout(fetch_homepage_data(), timeout=HOMEPAGE_FETCH_TIMEOUT, default=None)
     if data is None:
         return {"error": "Timeout lors du chargement des données"}
 
-    # 3. Met en cache (sérialisé en JSON) si Redis dispo
-    try:
-        await set_cached(HOMEPAGE_CACHE_KEY, json.dumps(data), ttl=HOMEPAGE_CACHE_TTL)
-    except RuntimeError:
-        pass  # Redis non configuré, on continue sans cache
+    # 3. Met en cache (sérialisé en JSON)
+    await set_cached(HOMEPAGE_CACHE_KEY, json.dumps(data), ttl=HOMEPAGE_CACHE_TTL)
     return data
