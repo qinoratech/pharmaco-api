@@ -8,6 +8,7 @@ from app.routers import router as api_router
 from app.core.config import settings
 import redis.asyncio as redis  # ← Utilisez directement redis
 from app.routers.health import router as health_router  # ← Importez health_router
+from app.database.mongodb import init_app as init_mongo
 
 # Gestion du cycle de vie
 @asynccontextmanager
@@ -28,6 +29,8 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.include_router(api_router)
 
 app.include_router(health_router)  # ← Assurez-vous que health_router est importé et inclus
+# initialize MongoDB lifecycle handlers
+init_mongo(app)
 """@app.get("/health")
 async def health_check():
     start = time.time()
