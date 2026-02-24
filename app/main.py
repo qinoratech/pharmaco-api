@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from app.routers import router as api_router
 from app.core.config import settings
 import redis.asyncio as redis  # ← Utilisez directement redis
+from app.routers.health import router as health_router  # ← Importez health_router
 
 # Gestion du cycle de vie
 @asynccontextmanager
@@ -26,7 +27,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.include_router(api_router)
 
-@app.get("/health")
+app.include_router(health_router)  # ← Assurez-vous que health_router est importé et inclus
+"""@app.get("/health")
 async def health_check():
     start = time.time()
     result = {"status": "ok", "services": {}, "uptime": None}
@@ -41,7 +43,7 @@ async def health_check():
         result["services"]["redis"] = "not-configured"
 
     result["uptime"] = f"{time.time() - start:.3f}s"
-    return JSONResponse(content=result, status_code=status.HTTP_200_OK)
+    return JSONResponse(content=result, status_code=status.HTTP_200_OK)"""
 
 if __name__ == "__main__":
     import uvicorn
